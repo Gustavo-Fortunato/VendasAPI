@@ -1,6 +1,4 @@
-﻿
-
-using global::VendasAPI.Domain.Services;
+﻿using global::VendasAPI.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 using VendasAPI.Domain.Dtos;
 
@@ -17,17 +15,17 @@ namespace VendasAPI.API.Controllers
             _vendaService = vendaService;
         }
 
-        [HttpPost]
+        [HttpPost("salvar")]
         public IActionResult Create([FromBody] VendaDto vendaDto)
         {
             var venda = _vendaService.Create(vendaDto);
             return CreatedAtAction(nameof(GetById), new { id = venda.VendaId }, venda);
         }
 
-        [HttpGet]
+        [HttpGet("listar")]
         public IActionResult GetAll() => Ok(_vendaService.GetAll());
 
-        [HttpGet("{id}")]
+        [HttpGet("obter/{id}")]
         public IActionResult GetById(int id) => Ok(_vendaService.GetById(id));
 
         [HttpPut("atualizar/{id}")]
@@ -37,7 +35,7 @@ namespace VendasAPI.API.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("cancelar/{id}")]
         public IActionResult Cancel(int id)
         {
             _vendaService.Cancel(id);
