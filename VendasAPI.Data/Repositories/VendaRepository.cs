@@ -15,12 +15,20 @@ namespace VendasAPI.Domain.Repositories
             _context = context;
         }
 
-        public void Add(Venda venda){}
+        public void Add(Venda venda)
+        {
+            _context.Vendas.Add(venda);
+            _context.SaveChanges();
+        }
 
         public IEnumerable<Venda> GetAll() => _context.Vendas.Include(v => v.ItemVenda).ToList();
 
         public Venda GetById(int id) => _context.Vendas.Include(v => v.ItemVenda).FirstOrDefault(v => v.VendaId == id);
 
-        public void Update(Venda venda){}
+        public void Update(Venda venda)
+        {
+            _context.Vendas.Update(venda);
+            _context.SaveChanges();
+        }
     }
 }
