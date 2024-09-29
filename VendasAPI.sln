@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{F9267D74
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VendasAPI.UnitTests", "VendasAPI.UnitTests\VendasAPI.UnitTests.csproj", "{D3AD720B-7BEF-4577-B78C-F550F7E519D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logs", "Logs\Logs.csproj", "{A4225D16-0AD9-482D-8A90-27A812B9482E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VendasAPI.Logs", "Logs\VendasAPI.Logs.csproj", "{A4225D16-0AD9-482D-8A90-27A812B9482E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
