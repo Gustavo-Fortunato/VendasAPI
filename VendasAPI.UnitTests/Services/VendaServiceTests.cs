@@ -1,4 +1,5 @@
 using FluentAssertions;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 using VendasAPI.Domain.Dtos;
 using VendasAPI.Domain.Entities;
@@ -10,11 +11,12 @@ public class VendaServiceTests
 {
     private readonly IVendaRepository _vendaRepository;
     private readonly IVendaService _vendaService;
+    private readonly ILogger<VendaService> _logger;
 
     public VendaServiceTests()
     {
         _vendaRepository = Substitute.For<IVendaRepository>();
-        _vendaService = new VendaService(_vendaRepository);
+        _vendaService = new VendaService(_vendaRepository, _logger);
     }
 
     [Fact]

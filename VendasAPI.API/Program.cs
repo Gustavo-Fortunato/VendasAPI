@@ -1,10 +1,19 @@
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System.Text.Json.Serialization;
 using VendasAPI.Data.Configuration;
 using VendasAPI.Domain.Repositories;
 using VendasAPI.Domain.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//Configurando Serilog
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File("Logs/vendas-log.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
