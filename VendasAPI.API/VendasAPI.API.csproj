@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Logs\VendasAPI.Logs.csproj" />
     <ProjectReference Include="..\VendasAPI.Data\VendasAPI.Data.csproj" />
     <ProjectReference Include="..\VendasAPI.Domain\VendasAPI.Domain.csproj" />
   </ItemGroup>

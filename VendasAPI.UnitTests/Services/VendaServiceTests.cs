@@ -1,5 +1,6 @@
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
+using Moq;
 using NSubstitute;
 using VendasAPI.Domain.Dtos;
 using VendasAPI.Domain.Entities;
@@ -40,8 +41,60 @@ public class VendaServiceTests
         venda.Should().NotBeNull();
         venda.ClienteId.Should().Be(vendaDto.ClienteId);
         venda.ValorTotal.Should().Be(20);
-        _vendaRepository.Received(1).Add(Arg.Any<Venda>());
+        _vendaRepository.Received(1).Add(Arg.Is<Venda>(v => v.ClienteId == vendaDto.ClienteId && v.ValorTotal == 20));
     }
+
+    [Fact]
+    public void Create_Should_Throw_Exception_When_Items_Are_Empty()
+    {
+        // Arrange
+        var vendaDto = new VendaDto
+        {
+            ClienteId = "123",
+            ClienteNome = "Cliente Teste",
+            Itens = new List<ItemVendaDto>() 
+        };
+
+        // Act
+        Action act = () => _vendaService.Create(vendaDto);
+
+        // Assert
+        act.Should().Throw<ArgumentException>().WithMessage("Itens de Venda não podem ser vazios.");
+    }
+
+    [Fact]
+    public void Update_Should_Not_Update_If_Venda_Does_Not_Exist()
+    {
+        // Arrange
+        var vendaDto = new VendaDto
+        {
+            ClienteId = "123",
+            ClienteNome = "Cliente Atualizado",
+            Itens = new List<ItemVendaDto>()
+        };
+
+        _vendaRepository.GetById(1).Returns((Venda)null); 
+
+        // Act
+        _vendaService.Update(1, vendaDto);
+
+        // Assert
+        _vendaRepository.DidNotReceive().Update(Arg.Any<Venda>());
+    }
+
+    [Fact]
+    public void Cancel_Should_Not_Cancel_If_Venda_Does_Not_Exist()
+    {
+        // Arrange
+        _vendaRepository.GetById(1).Returns((Venda)null); 
+
+        // Act
+        _vendaService.Cancel(1);
+
+        // Assert
+        _vendaRepository.DidNotReceive().Update(Arg.Any<Venda>());
+    }
+
 
     [Fact]
     public void Update_Should_Update_Venda()

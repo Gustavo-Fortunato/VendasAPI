@@ -9,9 +9,15 @@ namespace VendasAPI.Domain.Services
     public class VendaService(IVendaRepository vendaRepository, ILogger<VendaService> logger) : IVendaService
     {
         private readonly IVendaRepository _vendaRepository = vendaRepository;
-        private readonly ILogger<VendaService> _logger = logger;
+        public readonly ILogger<VendaService> _logger = logger ;
+
+
         public Venda Create(VendaDto vendaDto)
         {
+            if (vendaDto.Itens == null || !vendaDto.Itens.Any())
+            {
+                throw new ArgumentException("Itens de Venda não podem ser vazios.");
+            }
             var venda = new Venda
             {
                 ClienteId = vendaDto.ClienteId,
@@ -98,32 +104,35 @@ namespace VendasAPI.Domain.Services
 
         private void PublicarEvento<T>(T evento)
         {
+
+
             // Registrar o evento no log, capturando o nome do evento e os atributos principais
             var eventType = evento.GetType().Name;
-
-            if (evento is CompraCriadaEvent compraCriada)
-            {
-                _logger.LogInformation("Evento {EventType} publicado: VendaId = {VendaId}, ClienteId = {ClienteId}, ValorTotal = {ValorTotal}",
-                    eventType, compraCriada.VendaId, compraCriada.ClienteId, compraCriada.ValorTotal);
-            }
-            else if (evento is CompraAlteradaEvent compraAlterada)
-            {
-                _logger.LogInformation("Evento {EventType} publicado: VendaId = {VendaId}, NovoValorTotal = {NovoValorTotal}",
-                    eventType, compraAlterada.VendaId, compraAlterada.NovoValorTotal);
-            }
-            else if (evento is CompraCanceladaEvent compraCancelada)
-            {
-                _logger.LogInformation("Evento {EventType} publicado: VendaId = {VendaId}, DataCancelamento = {DataCancelamento}",
-                    eventType, compraCancelada.VendaId, compraCancelada.DataCancelamento);
-            }
-            else if (evento is ItemCanceladoEvent itemCancelado)
-            {
-                _logger.LogInformation("Evento {EventType} publicado: VendaId = {VendaId}, ProdutoId = {ProdutoId}, DataCancelamento = {DataCancelamento}",
-                    eventType, itemCancelado.VendaId, itemCancelado.ProdutoId, itemCancelado.DataCancelamento);
-            }
-            else
-            {
-                _logger.LogInformation("Evento {EventType} publicado", eventType);
+            if (_logger != null) { 
+                if (evento is CompraCriadaEvent compraCriada)
+                {
+                    _logger.LogInformation("Evento {EventType} publicado: VendaId = {VendaId}, ClienteId = {ClienteId}, ValorTotal = {ValorTotal}",
+                        eventType, compraCriada.VendaId, compraCriada.ClienteId, compraCriada.ValorTotal);
+                }
+                else if (evento is CompraAlteradaEvent compraAlterada)
+                {
+                    _logger.LogInformation("Evento {EventType} publicado: VendaId = {VendaId}, NovoValorTotal = {NovoValorTotal}",
+                        eventType, compraAlterada.VendaId, compraAlterada.NovoValorTotal);
+                }
+                else if (evento is CompraCanceladaEvent compraCancelada)
+                {
+                    _logger.LogInformation("Evento {EventType} publicado: VendaId = {VendaId}, DataCancelamento = {DataCancelamento}",
+                        eventType, compraCancelada.VendaId, compraCancelada.DataCancelamento);
+                }
+                else if (evento is ItemCanceladoEvent itemCancelado)
+                {
+                    _logger.LogInformation("Evento {EventType} publicado: VendaId = {VendaId}, ProdutoId = {ProdutoId}, DataCancelamento = {DataCancelamento}",
+                        eventType, itemCancelado.VendaId, itemCancelado.ProdutoId, itemCancelado.DataCancelamento);
+                }
+                else
+                {
+                    _logger.LogInformation("Evento {EventType} publicado", eventType);
+                }
             }
         }
 
