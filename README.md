@@ -37,27 +37,51 @@ Além disso, eventos como CompraCriada, CompraAlterada, CompraCancelada, e ItemC
 
 ### Estrutura do Projeto
 ├── tests
+
+
 │   ├── VendasAPI.UnitTests
+
 │   │   ├── Services
+
 │
+
 ├── VendasAPI.API
+
 │   ├── Connected Services
+
 │   ├── Dependências
+
 │   ├── Controllers
+
 │   ├── DTOs
+
 │   ├── Logs               (logs gerados pelo Serilog)
+
 │
+
 ├── VendasAPI.Data
+
 │   ├── Configurations
+
 │   ├── Migrations         (para o Entity Framework)
+
 │   └── Repositories
+
 │
+
 ├── VendasAPI.Domain
+
 │   ├── DTOs
+
 │   ├── Entities
+
 │   ├── Events             (CompraCriadaEvent, CompraAlteradaEvent, etc.)
+
 │   ├── Repositories
+
 │   └── Services           (lógica de negócios e regras do domínio)
+
+
 ├── VendasAPI.Logs         (responsável pelo gerenciamento de logs)
 
 ### Descrição dos Diretórios
